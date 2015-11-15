@@ -1,50 +1,9 @@
 /*
-Connect:
-    1. <script src="{{ STATIC_URL }}cart/cart.js"> </script>
-    2. Должен быть задан урл в свойстве тега data-cart-url='some/url/'.
+Add to page:
+    <script sib-cart-role="init" sib-cart-url="{% url 'cart' %}" src="{% static 'cart/cart.js' %}"></script>
 
-cart data in request.session: {'cart':{"total": total sum, "count":
-        cart count, "products": {product_pk_1: {'product_code': product_code,
-       'name': name,  'price': price,  'quant': quant, 'sum_': sum_}...}}
-
-Object cart:
-    After  successfully execution all methods update the attributes of the cart and call function callback
-
-    Methods:
-
-        cart.set(product_pk, quant, callback) - set quantity of the product in the cart equal quant
-
-        cart.add(product_pk, quant, callback) - add quantity of the product in the cart equal quant
-
-        cart.remove(product_pk, callback) - remove the product from the cart
-
-        cart.get(callback) - get attributes of the cart
-
-        cart.clear(callback) -clear the cart
-
-     Attributes :
-        cart.products = {{'product_pk': product_code,  'name': name,  'price': price,
-           'quant': quant, 'sum_': sum_}...} - dictionary
-
-        cart.total - total cost of the cart products
-
-        cart.count - total quantity of the cart products
-
-        getUrl() - url
-
-While no use settings .
-Settings:
-    There is necessary insert in  settings:
-    CART_SETTINGS = {
-        'model_name': model_name,
-        'appl_name': appl_name,
-        'price_field_name': price_field_name,
-        'code_field_name': code_field_name,
-        'name_field_name': name_field_name
-    }
+Module provides Cart class that represents cart data and allow to execute operations with cart.
 */
-
-// TODO
 
 function Cart(cartUpdateCallback) {
     var url = null,
@@ -52,6 +11,7 @@ function Cart(cartUpdateCallback) {
 
     init();
 
+    // set product count in cart
     vm.set = function(product_pk, count, callback) {
         $.ajax({
             url: getUrl(),
@@ -62,6 +22,7 @@ function Cart(cartUpdateCallback) {
         });
     }
 
+    // increase/decrease product count in cart
     vm.add = function(product_pk, count, callback) {
         $.ajax({
             url: getUrl(),
@@ -72,6 +33,7 @@ function Cart(cartUpdateCallback) {
         });
     }
 
+    // delete product in cart
     vm.delete = function(product_pk, callback) {
         $.ajax({
             url: getUrl(),
